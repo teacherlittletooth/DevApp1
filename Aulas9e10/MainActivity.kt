@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.qi.aula9manha.ui.theme.Aula9ManhaTheme
 
@@ -66,14 +69,6 @@ fun Greeting(
     screen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var userName by remember {
-        mutableStateOf(TextFieldValue(""))
-    }
-
-    var userPass by remember {
-        mutableStateOf(TextFieldValue(""))
-    }
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -81,25 +76,15 @@ fun Greeting(
     ) {
         Text(text = stringResource(id = R.string.text_screen1))
 
-        TextField(
-            value = userName,
-            onValueChange = { userName = it },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Person,
-                    contentDescription = null
-                )
-            },
-            placeholder = {
-                Text(text = stringResource(id = R.string.tf1))
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text
-            )
+        MyTextField(
+            isPassword = false,
+            imageVector = Icons.Rounded.Person,
+            text = R.string.tf2,
+            keyboardType = KeyboardType.Text
         )
 
         MyTextField(
-            value = userPass,
+            isPassword = true,
             imageVector = Icons.Rounded.Lock,
             text = R.string.tf2,
             keyboardType = KeyboardType.Password
@@ -113,32 +98,43 @@ fun Greeting(
     }
 }
 
-
-
+////////////////////////////Criando compomente "TextField" reutilizável
 @Composable
 fun MyTextField(
-    value: TextFieldValue,
+    isPassword: Boolean,
     imageVector: ImageVector,
     @StringRes text: Int,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType,
+    modifier: Modifier = Modifier
 ) {
+    var showPass by remember {
+        mutableStateOf(false)
+    }
+
+    var textField by remember {
+        mutableStateOf(TextFieldValue(""))
+    }
+
     TextField(
-        value = value,
-        onValueChange = { value },
+        value = textField,
+        onValueChange = { textField = it },
         leadingIcon = {
             Icon(
                 imageVector = imageVector,
-                contentDescription = null
+                contentDescription = null,
+                modifier = if(isPassword) modifier.clickable { showPass = !showPass } else modifier
             )
         },
         placeholder = {
             Text(text = stringResource(id = text))
         },
+        visualTransformation = if (showPass || !isPassword) VisualTransformation.None else PasswordVisualTransformation('X'),
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType
-        )
+        ),
     )
 }
+///////////////////////////////////////////////////////////////////////////
 
 @Preview(showBackground = true, widthDp = 320, heightDp = 480)
 @Composable
