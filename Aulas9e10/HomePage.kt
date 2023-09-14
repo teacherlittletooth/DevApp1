@@ -1,4 +1,4 @@
-package com.qi.aula10noite
+package com.qi.aula10manha
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,7 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
@@ -23,19 +32,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.qi.aula10noite.ui.theme.Aula10NoiteTheme
+import com.qi.aula10manha.ui.theme.Aula10ManhaTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Aula10NoiteTheme {
-               MySearchField()
+            Aula10ManhaTheme {
+               //
             }
         }
     }
@@ -46,18 +58,19 @@ fun MySearchField(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondary,
         shape = MaterialTheme.shapes.medium,
         modifier = modifier
-            .padding(15.dp)
             .fillMaxWidth()
+            .padding(15.dp)
     ) {
         Row(
             modifier = modifier.padding(10.dp)
         ) {
             Image(
                 imageVector = Icons.Outlined.Search,
-                contentDescription = null
+                contentDescription = null,
+                modifier = modifier.size(30.dp)
             )
 
             Spacer(modifier = modifier.width(10.dp))
@@ -70,26 +83,29 @@ fun MySearchField(
     }
 }
 
-
 @Composable
 fun MyProfile(
     modifier: Modifier = Modifier,
-    @DrawableRes image: Int,
-    @StringRes text: Int
+    @DrawableRes image: Int = R.drawable.logo,
+    @StringRes text: Int = R.string.teste
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.inversePrimary,
+        shape = MaterialTheme.shapes.small,
         modifier = modifier.padding(10.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.padding(5.dp)
         ) {
             Image(
                 painter = painterResource(id = image),
                 contentDescription = null,
+                contentScale = ContentScale.Inside,
                 modifier = modifier
-                    .size(60.dp)
                     .clip(CircleShape)
+                    .size(60.dp)
+                    .border(3.dp, Color.Gray, CircleShape)
             )
 
             Text(text = stringResource(id = text))
@@ -97,21 +113,20 @@ fun MyProfile(
     }
 }
 
-
 @Composable
 fun MyCard(
     modifier: Modifier = Modifier,
-    @DrawableRes image: Int,
-    @StringRes text: Int
+    @DrawableRes image: Int = R.drawable.logo,
+    @StringRes text: Int = R.string.teste
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.inverseOnSurface,
-        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.inversePrimary,
+        shape = MaterialTheme.shapes.small,
         modifier = modifier.padding(10.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier.width(200.dp)
+            modifier = modifier.width(180.dp)
         ) {
             Image(
                 painter = painterResource(id = image),
@@ -122,12 +137,12 @@ fun MyCard(
             Text(
                 text = stringResource(id = text),
                 textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = modifier.fillMaxWidth()
             )
         }
     }
 }
-
 
 @Composable
 fun MyCarousel(
@@ -136,17 +151,16 @@ fun MyCarousel(
 ) {
     LazyRow {
         items(list) {
-            l -> MyProfile(
-                    image = l.image,
-                    text = l.text
-                )
+            x -> MyProfile(
+                image = x.image,
+                text = x.text
+            )
         }
     }
 }
 
-
 @Composable
-fun MyCardGrid(
+fun MyGridCard(
     modifier: Modifier = Modifier,
     list: List<Elements>
 ) {
@@ -155,51 +169,50 @@ fun MyCardGrid(
         modifier = modifier.height(160.dp)
     ) {
         items(list) {
-            l -> MyCard(
-                    image = l.image,
-                    text = l.text
-                )
+            y -> MyCard(
+                text = y.text,
+                image = y.image
+            )
         }
+    }
+}
+
+/////////////////////////////// PREVIEW ////////////////////////////
+@Preview(showBackground = true)
+@Composable
+fun MySearchFieldPreview() {
+    Aula10ManhaTheme {
+        MySearchField()
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    Aula10NoiteTheme {
-        MyCardGrid(list = listElements)
+fun MyCarouselPreview() {
+    Aula10ManhaTheme {
+        MyCarousel(list = listElements)
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun MyGridPreview() {
+    Aula10ManhaTheme {
+        MyGridCard(list = listElements)
+    }
+}
 
+/////////////////////////////// DADOS ////////////////////////////
 data class Elements(
-    var image: Int,
-    var text: Int
+    var image: Int = R.drawable.logo,
+    var text: Int = R.string.teste
 )
 
 val listElements = listOf(
-    Elements(
-        R.drawable.ic_launcher_background,
-        R.string.teste
-    ),
-    Elements(
-        R.drawable.ic_launcher_background,
-        R.string.teste
-    ),
-    Elements(
-        R.drawable.ic_launcher_background,
-        R.string.teste
-    ),
-    Elements(
-        R.drawable.ic_launcher_background,
-        R.string.teste
-    ),
-    Elements(
-        R.drawable.ic_launcher_background,
-        R.string.teste
-    ),
-    Elements(
-        R.drawable.ic_launcher_background,
-        R.string.teste
-    )
+    Elements(),
+    Elements(),
+    Elements(),
+    Elements(),
+    Elements(),
+    Elements()
 )
