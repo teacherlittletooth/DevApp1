@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Instagreen T</string>
+    <string name="example">Este é um texto de exemplo!</string>
+
+    <string name="post1">Não contavam com minha astúcia!</string>
+    <string name="post2">El Pistolero está de vuelta!</string>
+    <string name="post3">Quando eu estou aqui, eu sinto esse momento lindo...</string>
+    <string name="post4">Jira, jira jaya!</string>
+</resources>
