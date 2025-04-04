@@ -1,48 +1,63 @@
-///Jokenpô de máquinas:
-///Um número randômico é utilizado para
-///escolher as jogadas
 import kotlin.random.Random
 
+var ptsPlayer1 = 0
+var ptsPlayer2 = 0
+
 fun main() {
-    //Declaração de variáveis
-    val escolhaJogador 	: Int
-    val escolhaCpu 		: Int
+    var rodada = 1
     
-    /* Regras do jogo
-     1 - PEDRA, 2 - PAPEL, 3 - TESOURA
-     1 GANHA DE 3
-     2 GANHA DE 1
-     3 GANHA DE 2
-    */
+    while( rodada < 6 ) {
+        val jogadaPlayer1 = Random.nextInt(0, 3)
+        val jogadaPlayer2 = Random.nextInt(0, 3)
+        
+    	println(" ******** RODADA $rodada ******** ")
+        print("P1 => ${ jogada(jogadaPlayer1) }")
+        print(" X ")
+        println("${ jogada(jogadaPlayer2) } <= P2")
+        
+        vencedor( jogadaPlayer1, jogadaPlayer2 )
+        
+        println("PLACAR: Player1 = $ptsPlayer1 | Player2 = $ptsPlayer2")
+                
+        println("=============================\n")
+        
+        rodada++
+    } // while
     
-    //Atribuição de valores às variáveis
-    escolhaJogador = Random.nextInt(1,4)
-    escolhaCpu = Random.nextInt(1,4)
-    
-    //Mostrando as escolhas
-    when(escolhaJogador) {
-        1 -> println("Jogador escolheu PEDRA")
-        2 -> println("Jogador escolheu PAPEL")
-        3 -> println("Jogador escolheu TESOURA")
+    if( ptsPlayer1 > ptsPlayer2 ) {
+        println("🎉 Vitória do PLAYER 1 🎉")
+    } else if( ptsPlayer1 < ptsPlayer2 ) {
+        println("✅ Vitória do PLAYER 2 ✅")
+    } else {
+        println("👍 Terminou com EMPATE 👍")
     }
     
-    when(escolhaCpu) {
-        1 -> println("Máquina escolheu PEDRA")
-        2 -> println("Máquina escolheu PAPEL")
-        3 -> println("Máquina escolheu TESOURA")
+} // main
+
+
+fun jogada(escolha: Int) : String {
+    var result = ""
+    when( escolha ) {
+        0 -> result = "Pedra💎"
+        1 -> result = "Papel🧻"
+        2 -> result = "Tesoura✂️"
     }
-    
-    //Verificando quem venceu
-    if((escolhaJogador == 1 && escolhaCpu == 3) ||
-       (escolhaJogador == 2 && escolhaCpu == 1) ||
-       (escolhaJogador == 3 && escolhaCpu == 2)) {
-        println("Jogador venceu!")
+    return result
+}
+
+
+fun vencedor(jp1: Int, jp2: Int) {
+    if( jp1 == jp2 ) {
+        println("=> EMPATE")
+    } else if(
+    	jp1 == 0 && jp2 == 2 ||
+        jp1 == 1 && jp2 == 0 ||
+        jp1 == 2 && jp2 == 1
+    ) {
+        println("=> Ponto para PLAYER 1")
+        ptsPlayer1++
+    } else {
+        println("=> Ponto para PLAYER 2")
+        ptsPlayer2++
     }
-    else if(escolhaJogador == escolhaCpu) {
-        println("Empate!")
-    }
-    else {
-        println("Máquina venceu!")
-    }
-    
 }
