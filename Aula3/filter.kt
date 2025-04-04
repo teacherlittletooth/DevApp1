@@ -14,7 +14,7 @@ var listaCarros = mutableListOf(
 fun main() {
 
     // Criando lista mutável para filtrar dados da outra lista
-    var listaFiltro: MutableList<String> = mutableListOf()
+    val listaFiltro: MutableList<String> = mutableListOf()
 
     // Mostrando dados sem filtro
     println("***********LISTA COMPLETA************")
@@ -22,7 +22,7 @@ fun main() {
     
     //Filtrando
     listaCarros.forEach {
-        if (it.toLowerCase().contains("ch")) {
+        if (it.lowercase().contains("ch")) {
             listaFiltro.add(it)
         }
     }
@@ -42,7 +42,7 @@ fun main() {
 
 fun apagaElemento(filtro: String) {
     listaCarros.removeIf { 
-        it.toLowerCase().contains(filtro)
+        it.lowercase().contains(filtro)
     }
     println("Elementos excluídos!")
 }
