@@ -11,8 +11,19 @@ fun main() {
     
     println("\n ==> Mostrando todas as cantadas <==")
     
+    var contador = 1
     cantadas.forEach{
-        println(it)
+        print("$contador)")
+        print("${ it.cantada } / ${ it.momento } \n\n")
+        contador++
+    }
+    
+    cantadas.forEachIndexed{ num, obj ->
+        print(num + 1)
+        print(" - Cantada: ")
+        println(obj.cantada)
+        print("Momento: ")
+        println(obj.momento)
     }
 }
 
